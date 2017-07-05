@@ -35,9 +35,8 @@ public class ConexionMongoDB {
 
     public ConexionMongoDB(String xURL, int xPuerto, String xBD) {
         try {
- 
             // To connect to mongodb server
-            this.mongoClient = new MongoClient(xURL, xPuerto); 
+            this.mongoClient = new MongoClient(xURL, xPuerto);
             // Now connect to your databases
             this.database = mongoClient.getDatabase(xBD);
             System.out.println("Connect to database successfully");

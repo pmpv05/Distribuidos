@@ -16,44 +16,48 @@ import javax.swing.JOptionPane;
  */
 public class UsuariosControl {
 
-    static Statement st = null;
-    static ResultSet rs = null;
+    private static String url = "localhost";
+    private static String puerto = String.valueOf(5432);
+    private static String bd = "chat";
+    private static String user = "postgres";
+    private static String pass = "7271";
 
-    public static int login(String xUsuario, String xPass, Connection xConn) {
+    private static ConexionPostgres conexionPostgres = new ConexionPostgres(url, puerto, bd, user, pass);
+    private static Connection con = conexionPostgres.getConnection();
+
+    public static int login(String xUsuario, String xPass) {
         int res = 0;
 
         try {
-            st = xConn.createStatement();
-            rs = st.executeQuery(String.format("SELECT * FROM usuarios WHERE user = {0}", xUsuario));
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(String.format("SELECT * FROM usuarios WHERE usuario = '%s';", xUsuario));
 
             while (rs.next()) {
                 res = 1;
             }
             rs.close();
             st.close();
-            xConn.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (res == 1) {
             try {
-                st = xConn.createStatement();
-                rs = st.executeQuery(String.format("SELECT * FROM usuarios WHERE user = '{0}' AND pass = '{1}'", xUsuario, xPass));
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(String.format("SELECT * FROM usuarios WHERE usuario = '%s' AND pass = '%s';", xUsuario, xPass));
 
                 while (rs.next()) {
-                    res = 2; 
+                    res = 2;
                 }
                 rs.close();
                 st.close();
-                xConn.commit();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         if (res == 0) {
-            JOptionPane.showMessageDialog(null, "El usuario ingresado no existe. Puede registrar un usuario accediendo al menú principal.");
+            JOptionPane.showMessageDialog(null, "El usuario ingresado no existe.");
         } else if (res == 1) {
             JOptionPane.showMessageDialog(null, "Los datos ingresados no son correctos.");
         }
@@ -61,21 +65,21 @@ public class UsuariosControl {
         return res;
     }
 
-    public static int registroUsuario(String xUsuario, String xPass, String xNombre, Connection xConn) {
+    public static int registroUsuario(String xUsuario, String xPass, String xNombre) {
         int res = 0;
 
         try {
-            st = xConn.createStatement();
+            Statement st = con.createStatement();
 
-            String sql = String.format("INSERT INTO usuarios (user, pass, name) VALUES ('{0}','{1}','{2}')", xUsuario, xPass, xNombre);
+            String sql = String.format("INSERT INTO usuarios (usuario, pass, nombre) VALUES ('%s','%s','%s');", xUsuario, xPass, xNombre);
 
             res = st.executeUpdate(sql);
             st.close();
-            xConn.commit();
+            con.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
-
+            JOptionPane.showMessageDialog(null, "Error al insertar el usuario.\n"+e);
         }
 
         return res;

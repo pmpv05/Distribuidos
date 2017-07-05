@@ -5,6 +5,7 @@
  */
 package BDyGral;
 
+import Cliente.Login;
 import Servidor.ServidorChat;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
@@ -18,11 +19,6 @@ import org.postgresql.jdbc.PgConnection;
  */
 public class Main {
 
-    public static Connection conPg = null;
-    public static MongoDatabase mongoDatabase = null;
-    public static String direccionSocket;
-    public static int puertoPg;
-
     public static void main(String[] args) {
 
         try {
@@ -33,7 +29,7 @@ public class Main {
             String pass = "7271";
 
             ConexionPostgres conexionPostgres = new ConexionPostgres(url, puerto, bd, user, pass);
-            conPg = conexionPostgres.getConnection();
+            VarGlobal.setConPg(conexionPostgres.getConnection());
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Hubo un error en la conexión con PostgreSQL.");
@@ -46,22 +42,24 @@ public class Main {
 
             ConexionMongoDB conMongoDB = new ConexionMongoDB(url, puerto, bd);
             MongoClient mongoClient = conMongoDB.getMongoClient();
-            mongoDatabase = conMongoDB.getDatabase();
+            VarGlobal.setMongoDatabase(conMongoDB.getDatabase());
+            System.out.println("MongoDB");
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Hubo un error en la conexión con MongoDB.");
         }
 
-        direccionSocket = "localhost"; 
-        puertoPg = 5557;
+        VarGlobal.setDireccionSocket("localhost"); 
+         VarGlobal.setPuertoSocket(5557);
         
         try {
             //Se inicia servidor
-            new ServidorChat(puertoPg, conPg, mongoDatabase);
+            new ServidorChat(VarGlobal.getPuertoSocket(), VarGlobal.getConPg(), VarGlobal.getMongoDatabase());
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Hubo un error en iniciar el Servidor.");
         }
+       
     }
 
 }
