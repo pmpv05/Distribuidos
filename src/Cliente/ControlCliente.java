@@ -79,7 +79,7 @@ public class ControlCliente implements ActionListener, Runnable
             }
         } catch (Exception e)
         {
-            e.printStackTrace();
+            e.printStackTrace();  
         }
     }
 }

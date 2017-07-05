@@ -5,6 +5,8 @@
  */
 package Cliente;
 
+import BDyGral.Main;
+import static BDyGral.Main.direccionSocket;
 import BDyGral.UsuariosControl;
 import BDyGral.VarGlobal;
 import javax.swing.JOptionPane;
@@ -113,12 +115,13 @@ public class Login extends javax.swing.JFrame {
 
         //JOptionPane.showMessageDialog(this, "Has pulsado el botón");
         String passText = new String(txtPass.getPassword());
-        if(UsuariosControl.login(txtUser.getText(),passText) == 0){
+        if(UsuariosControl.login(txtUser.getText(),passText,Main.conPg) == 2){
             //etiqueto el nombre del usuario logueado
             VarGlobal.usuarioLogged = "Online: "+ txtUser.getText();
         }
         //implementar aca
-        ClienteChat clienteChat = new ClienteChat();
+        ClienteChat clienteChat = new ClienteChat(Main.direccionSocket,Main.puertoPg);
+        
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**

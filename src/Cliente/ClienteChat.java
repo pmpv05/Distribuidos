@@ -10,9 +10,6 @@ import javax.swing.WindowConstants;
  * ventana y la clase de control.
  */
 public class ClienteChat {
-
-    private int puerto = 5557;
-    private String direccionSocket = "localhost";
     /**
      * Socket con el servidor del chat
      */
@@ -26,12 +23,12 @@ public class ClienteChat {
     /**
      * Crea la ventana, establece la conexi�n e instancia al controlador.
      */
-    public ClienteChat() {
+    public ClienteChat(String xDireccionSocket, int xPuerto) {
         try {
-            this.socket = new Socket(direccionSocket, puerto);
+            this.socket = new Socket(xDireccionSocket, xPuerto);
             this.pantallaCliente = new PantallaCliente();
             ControlCliente control = new ControlCliente(socket, pantallaCliente);
-        } catch (Exception e) {
+        } catch (Exception e) { 
             e.printStackTrace();
         }
     }

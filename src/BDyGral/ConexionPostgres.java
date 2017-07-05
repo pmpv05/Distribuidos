@@ -16,9 +16,13 @@ import java.sql.SQLException;
 public class ConexionPostgres {
 
     Connection connection;
-    
-    public ConexionPostgres() {
-        
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public ConexionPostgres(String xURL, String xPuerto, String xBD, String xUser, String xPass) {
+
         System.out.println("-------- PostgreSQL "
                 + "JDBC Connection Testing ------------");
 
@@ -40,9 +44,9 @@ public class ConexionPostgres {
         try {
 
             this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://127.0.0.1:5432/testdb", "mkyong",
-                    "123456");
-
+                    "jdbc:postgresql://"+xURL+":"+xPuerto+"/"+xBD, xUser,
+                    xPass);
+ 
         } catch (SQLException e) {
 
             System.out.println("Connection Failed! Check output console");

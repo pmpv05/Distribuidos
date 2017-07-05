@@ -33,14 +33,13 @@ public class ConexionMongoDB {
         return database;
     }
 
-    public ConexionMongoDB() {
+    public ConexionMongoDB(String xURL, int xPuerto, String xBD) {
         try {
-
+ 
             // To connect to mongodb server
-            this.mongoClient = new MongoClient("localhost", 27017);
-
+            this.mongoClient = new MongoClient(xURL, xPuerto); 
             // Now connect to your databases
-            this.database = mongoClient.getDatabase("chat");
+            this.database = mongoClient.getDatabase(xBD);
             System.out.println("Connect to database successfully");
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
