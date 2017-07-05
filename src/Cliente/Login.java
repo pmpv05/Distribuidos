@@ -121,7 +121,7 @@ public class Login extends javax.swing.JFrame {
         }
         //implementar aca
         ClienteChat clienteChat = new ClienteChat(Main.direccionSocket,Main.puertoPg);
-        
+        this.dispose(); 
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**
