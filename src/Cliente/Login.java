@@ -8,6 +8,7 @@ package Cliente;
 import BDyGral.Main;
 import BDyGral.UsuariosControl;
 import BDyGral.VarGlobal;
+import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,6 +24,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -72,6 +74,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         txtPass.setName("txtPass"); // NOI18N
+        txtPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPassActionPerformed(evt);
+            }
+        });
 
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -125,6 +132,7 @@ public class Login extends javax.swing.JFrame {
 
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
         // TODO add your handling code here:
+        btnIngresarActionPerformed(evt);
     }//GEN-LAST:event_txtUserActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
@@ -138,8 +146,6 @@ public class Login extends javax.swing.JFrame {
             ClienteChat clienteChat = new ClienteChat( "localhost", 5557);
             this.dispose();
         }
-
-
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
@@ -154,6 +160,16 @@ public class Login extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
+        // TODO add your handling code here:
+        btnIngresarActionPerformed(evt);
+    }//GEN-LAST:event_txtPassActionPerformed
+
+    public void addActionListener(ActionListener accion) {
+        txtUser.addActionListener(accion);
+        txtPass.addActionListener(accion);
+
+    }
     /**
      * @param args the command line arguments
      */

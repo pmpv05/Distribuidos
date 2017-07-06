@@ -6,8 +6,19 @@
 package Cliente;
 
 import BDyGral.VarGlobal;
+import com.mongodb.DBCursor;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.DefaultListModel;
+import org.bson.BsonDocument;
+import org.bson.BsonString;
+import org.bson.BsonValue;
+import org.bson.Document;
 
 /**
  *
@@ -20,6 +31,8 @@ public class PantallaCliente extends javax.swing.JFrame {
      */
     public PantallaCliente() {
         initComponents();
+        setLocationRelativeTo(null);
+        cargarMsjMongo();
         this.lblOnline.setText(VarGlobal.usuarioLogged);
     }
 
@@ -43,8 +56,6 @@ public class PantallaCliente extends javax.swing.JFrame {
         txtMensaje = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         lblOnline = new javax.swing.JLabel();
-        menu = new javax.swing.JMenuBar();
-        menuArchivo = new javax.swing.JMenu();
 
         jMenu3.setText("jMenu3");
 
@@ -79,19 +90,16 @@ public class PantallaCliente extends javax.swing.JFrame {
         jLabel2.setText("Usuarios Online");
 
         txtMensaje.setName("txtMensaje"); // NOI18N
+        txtMensaje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMensajeActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Escribe tu mensaje aquí:");
 
         lblOnline.setText("Online: Pablo");
         lblOnline.setName("lblOnline"); // NOI18N
-
-        menu.setName("menu"); // NOI18N
-
-        menuArchivo.setText("Archivo");
-        menuArchivo.setName("menuArchivo"); // NOI18N
-        menu.add(menuArchivo);
-
-        setJMenuBar(menu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,7 +147,7 @@ public class PantallaCliente extends javax.swing.JFrame {
                     .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(lblOnline)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         lblOnline.getAccessibleContext().setAccessibleName("Online");
@@ -150,7 +158,13 @@ public class PantallaCliente extends javax.swing.JFrame {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         // TODO add your handling code here:
+        addTexto(getTexto());
     }//GEN-LAST:event_btnEnviarActionPerformed
+
+    private void txtMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMensajeActionPerformed
+        // TODO add your handling code here:
+        addTexto(getTexto());
+    }//GEN-LAST:event_txtMensajeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,7 +193,6 @@ public class PantallaCliente extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-       
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -200,30 +213,37 @@ public class PantallaCliente extends javax.swing.JFrame {
 
     }
 
+    private void cargarMsjMongo() {
+        MongoCollection<Document> colMongo = ClienteChat.mongoDatabase.getCollection("chat");
+        DefaultListModel lista = new DefaultListModel();
+        long largo = colMongo.count();
+        MongoCursor<Document> cursor = colMongo.find().iterator();
+        
+        while (cursor.hasNext()) {
+            Document tmp = cursor.next();
+            lista.addElement(tmp.toString());
+        }
+        listChat.setModel(lista);
+    }
+
     /**
      * A�ade el texto que se le pasa al textArea.
      *
      * @param texto Texto a a�adir
      */
     public void addTexto(String texto) {
-        DefaultListModel lista = new DefaultListModel();
-//esto esta asi ya que hay una jlist y para poder agregar los textos del chat hay que poner en una lista de este tip
-        //agregarle el texto y luego setear la lista al jlist
-        int i = 0;
-        while (i < listChat.getModel().getSize()) {
-            lista.addElement(listChat.getModel().getElementAt(i));
-            i++;
-        }
-        lista.addElement(texto);
+        MongoCollection colMongo = ClienteChat.mongoDatabase.getCollection("chat");
+        
+        Date date = new Date();
+        DateFormat fechaHora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	String convertido = fechaHora.format(date);
+        
+        colMongo.insertOne(new Document(convertido, texto));
+        
+        cargarMsjMongo();
 
-        listChat.setModel(lista);
     }
-
-    /**
-     * Devuelve el texto que hay en el textfield y lo borra.
-     *
-     * @return El texto del textfield.
-     */
+    
     public String getTexto() {
         String texto = txtMensaje.getText();
         txtMensaje.setText("");
@@ -241,8 +261,6 @@ public class PantallaCliente extends javax.swing.JFrame {
     private javax.swing.JLabel lblOnline;
     private javax.swing.JList listChat;
     private javax.swing.JList listUsuarios;
-    private javax.swing.JMenuBar menu;
-    private javax.swing.JMenu menuArchivo;
     private javax.swing.JTextField txtMensaje;
     // End of variables declaration//GEN-END:variables
 }
