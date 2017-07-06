@@ -75,7 +75,6 @@ public class UsuariosControl {
 
             res = st.executeUpdate(sql);
             st.close();
-            con.commit();
 
         } catch (Exception e) {
             e.printStackTrace();

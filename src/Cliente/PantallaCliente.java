@@ -5,6 +5,7 @@
  */
 package Cliente;
 
+import BDyGral.VarGlobal;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
 
@@ -19,6 +20,7 @@ public class PantallaCliente extends javax.swing.JFrame {
      */
     public PantallaCliente() {
         initComponents();
+        this.lblOnline.setText(VarGlobal.usuarioLogged);
     }
 
     /**
@@ -66,6 +68,11 @@ public class PantallaCliente extends javax.swing.JFrame {
 
         btnEnviar.setText("Enviar");
         btnEnviar.setName("btnEnviar"); // NOI18N
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Chat");
 
@@ -135,8 +142,15 @@ public class PantallaCliente extends javax.swing.JFrame {
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
+        lblOnline.getAccessibleContext().setAccessibleName("Online");
+        lblOnline.getAccessibleContext().setAccessibleDescription("");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,6 +179,7 @@ public class PantallaCliente extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+       
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

@@ -159,6 +159,9 @@
         <Property name="text" type="java.lang.String" value="Enviar"/>
         <Property name="name" type="java.lang.String" value="btnEnviar" noResource="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEnviarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -185,6 +188,10 @@
         <Property name="text" type="java.lang.String" value="Online: Pablo"/>
         <Property name="name" type="java.lang.String" value="lblOnline" noResource="true"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Online"/>
+        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
+      </AccessibilityProperties>
     </Component>
   </SubComponents>
 </Form>
